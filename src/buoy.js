@@ -1,6 +1,13 @@
 (function(win, undefined) {
 	'use strict';
 
+	var propMap = {
+		'margin': 'margin-top',
+		'top': 'top',
+		'padding': 'padding-top',
+		'transform': 'transform'
+	};
+
 	function _do($, _) {
 		var $win = $(window),
 			buoy = {
@@ -10,42 +17,50 @@
 						position: 50
 					}, opts);
 
-					var i,
-						$el,
-						$container,
-						elHeight,
-						containerHeight,
-						offset,
-						propMap = {
-							'margin': 'margin-top',
-							'top': 'top',
-							'padding': 'padding-top',
-							'transform': 'transform'
-						},
-						value,
+					var $el,
 						percentage = opts.position / 100;
 
-					for(i = 0; i < opts.$el.length, i < opts.$container.length; i++) {
+					for(var i = 0;; i++) {
+						if(i === opts.$el.length || i === opts.$container.length) break;
+
 						$el = opts.$el.eq(i);
-						$container = opts.$container.eq(i);
 
-						elHeight = $el.height();
-						containerHeight = $container.height();
-
-						offset = (containerHeight * percentage) - (elHeight * percentage);
-
-						if(offset < 0) {
-							offset = 0;
+						if($el[0].nodeName === 'IMG' && $el[0].complete === false) {
+							this._imgBinder($el, opts.$container.eq(i), percentage, opts.prop);
+						} else {
+							this._calculate($el, opts.$container.eq(i), percentage, opts.prop);
 						}
-
-						value = '' + offset + 'px';
-
-						if(opts.prop === 'transform') {
-							value = 'translateY(' + value + ')';
-						}
-
-						$el.css(propMap[opts.prop], value);
 					}
+				},
+
+				_imgBinder: function($el, $container, percentage, prop) {
+					$el.load($.proxy(function() {
+						this._calculate($el, $container, percentage, prop);
+					}, this));
+				},
+
+				_calculate: function($el, $container, percentage, prop) {
+					var elHeight,
+						containerHeight,
+						offset,
+						value,
+						
+					elHeight = $el.height();
+					containerHeight = $container.height();
+
+					offset = (containerHeight * percentage) - (elHeight * percentage);
+
+					if(offset < 0) {
+						offset = 0;
+					}
+
+					value = '' + offset + 'px';
+
+					if(prop === 'transform') {
+						value = 'translateY(' + value + ')';
+					}
+
+					$el.css(propMap[prop], value);
 				}
 			};
 

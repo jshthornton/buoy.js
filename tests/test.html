@@ -10,6 +10,7 @@
 			height: 500px;
 			background-color: red;
 			overflow: hidden;
+			margin-bottom: 5px;
 		}
 
 		.inner {
@@ -29,6 +30,10 @@
 		</div>
 	</div>
 
+	<div class="container">
+		<img src="https://lh6.googleusercontent.com/-ePjW8ruCR4s/AAAAAAAAAAI/AAAAAAAAAEE/Q-g9KTAWzso/w48-c-h48/photo.jpg">
+	</div>
+
 	<script src="scripts/jquery.js"></script>
 	<script src="../src/buoy.js"></script>
 
@@ -37,7 +42,14 @@
 			buoy.align({
 				prop: 'transform',
 				$el: $('.inner'),
-				$container: $('.container'),
+				$container: $('.container').eq(0),
+				position: 50
+			});
+
+			buoy.align({
+				prop: 'transform',
+				$el: $('img'),
+				$container: $('.container').eq(1),
 				position: 50
 			});
 		}());
