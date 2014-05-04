@@ -4,69 +4,48 @@
 	function _do($, _) {
 		var $win = $(window),
 			buoy = {
-				_hash: [],
-				_idCount: 0,
-
-				register: function(opts) {
+				align: function(opts) {
 					opts = $.extend(true, {
-
+						prop: 'margin',
+						position: 50
 					}, opts);
 
-					var id = this._idCount++;
+					var i,
+						$el,
+						$container,
+						elHeight,
+						containerHeight,
+						offset,
+						propMap = {
+							'margin': 'margin-top',
+							'top': 'top',
+							'padding': 'padding-top',
+							'transform': 'transform'
+						},
+						value,
+						percentage = opts.position / 100;
 
-					this._hash.push({
-						id: id
-					});
+					for(i = 0; i < opts.$el.length, i < opts.$container.length; i++) {
+						$el = opts.$el.eq(i);
+						$container = opts.$container.eq(i);
 
-					return id; 
-				},
+						elHeight = $el.height();
+						containerHeight = $container.height();
 
-				unregister: function(id) {
-					var index = _.findIndex(this._hash, { id: id });
+						offset = (containerHeight * percentage) - (elHeight * percentage);
 
-					if(index === -1) {
-						return false;
+						if(offset < 0) {
+							offset = 0;
+						}
+
+						value = '' + offset + 'px';
+
+						if(opts.prop === 'transform') {
+							value = 'translateY(' + value + ')';
+						}
+
+						$el.css(propMap[opts.prop], value);
 					}
-
-					this._unregisterByIndex(index);
-				},
-
-				unregisterAll: function() {
-					this._hash.length = 0;
-				},
-
-				_unregisterByIndex: function(index) {
-					this._hash.splice(index, 1);
-				},
-
-				start: function() {
-					$win.on('resize.buoy', 
-						_.bind(
-							_.debounce(
-								this._onWindowAdjust, 
-								100
-							), 
-							this
-						)
-					);
-
-					this.check();
-				},
-
-				stop: function() {
-					$win.off('resize.buoy');
-				},
-
-				_onWindowAdjust: function(e) {
-					this._updateDimensions(e.type);
-
-					this.check();
-				},
-
-				check: function() {
-					_.each(this._hash, function(value, index) {
-
-					}, this);
 				}
 			};
 
@@ -74,8 +53,8 @@
 	}
 
 	if (typeof define === 'function' && define.amd) {
-		define(['jquery', 'underscore'], _do);
+		define(['jquery'], _do);
 	} else {
-		win.buoy = _do(jQuery, _);
+		win.buoy = _do(jQuery);
 	}
 }(window));
