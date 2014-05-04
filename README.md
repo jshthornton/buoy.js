@@ -16,3 +16,6 @@ buoy.align({
 ```
 If you are experiencing the issue whereby the parent element is pushed down due to the margin then see this issue: 
 http://stackoverflow.com/questions/2680478/margin-top-push-outer-div-down
+
+## Images
+buoy automatically manages image dimensions so that they are calculated after it has loaded to ensure that the correct dimensions are used.
