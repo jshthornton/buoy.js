@@ -17,5 +17,9 @@ buoy.align({
 If you are experiencing the issue whereby the parent element is pushed down due to the margin then see this issue: 
 http://stackoverflow.com/questions/2680478/margin-top-push-outer-div-down
 
+The `$el` and `$container` are synchronised so that if the `$el` and `$container` contain more than 1 element then the alignment will occur on each `$el` with the corresponding `$container`.
+For example, if `$el` contains 3 elements, and `$container` contains 2 elements, then the first element in `$el` will align to the first element in `$container` and the second with the second.
+However the third in `$el` is ignored as it does not have a partner.
+
 ## Images
 buoy automatically manages image dimensions so that they are calculated after it has loaded to ensure that the correct dimensions are used.
