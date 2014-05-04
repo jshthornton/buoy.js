@@ -14,7 +14,9 @@
 				align: function(opts) {
 					opts = $.extend(true, {
 						prop: 'margin',
-						position: 50
+						position: 50,
+						elFn: 'height',
+						containerFn: 'height'
 					}, opts);
 
 					var $el,
@@ -26,27 +28,27 @@
 						$el = opts.$el.eq(i);
 
 						if($el[0].nodeName === 'IMG' && $el[0].complete === false) {
-							this._imgBinder($el, opts.$container.eq(i), percentage, opts.prop);
+							this._imgBinder($el, opts.$container.eq(i), percentage, opts);
 						} else {
-							this._calculate($el, opts.$container.eq(i), percentage, opts.prop);
+							this._calculate($el, opts.$container.eq(i), percentage, opts);
 						}
 					}
 				},
 
-				_imgBinder: function($el, $container, percentage, prop) {
+				_imgBinder: function($el, $container, percentage, opts) {
 					$el.load($.proxy(function() {
-						this._calculate($el, $container, percentage, prop);
+						this._calculate($el, $container, percentage, opts);
 					}, this));
 				},
 
-				_calculate: function($el, $container, percentage, prop) {
+				_calculate: function($el, $container, percentage, opts) {
 					var elHeight,
 						containerHeight,
 						offset,
-						value,
-						
-					elHeight = $el.height();
-					containerHeight = $container.height();
+						value;
+
+					elHeight = $el[opts.elFn]();
+					containerHeight = $container[opts.containerFn]();
 
 					offset = (containerHeight * percentage) - (elHeight * percentage);
 
@@ -56,11 +58,11 @@
 
 					value = '' + offset + 'px';
 
-					if(prop === 'transform') {
+					if(opts.prop === 'transform') {
 						value = 'translateY(' + value + ')';
 					}
 
-					$el.css(propMap[prop], value);
+					$el.css(propMap[opts.prop], value);
 				}
 			};
 
