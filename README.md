@@ -3,6 +3,9 @@ buoy.js
 
 buoy.js is a small utility script which helps the developer quickly vertically align an element to a container.
 
+## Demos
+http://codepen.io/Jshthornton/pen/aAdCH
+
 ## Usage
 ```
 buoy.align({
