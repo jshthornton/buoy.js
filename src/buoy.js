@@ -50,7 +50,7 @@
 					elHeight = $el[opts.elFn]();
 					containerHeight = $container[opts.containerFn]();
 
-					offset = (containerHeight * percentage) - (elHeight * percentage);
+					offset = (containerHeight * percentage) - (elHeight / 2);
 
 					if(offset < 0) {
 						offset = 0;
