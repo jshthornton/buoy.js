@@ -36,7 +36,7 @@
 				},
 
 				_imgBinder: function($el, $container, percentage, opts) {
-					$el.load($.proxy(function() {
+					$el.one('load', $.proxy(function() {
 						this._calculate($el, $container, percentage, opts);
 					}, this));
 				},
