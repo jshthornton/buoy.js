@@ -17,6 +17,14 @@ buoy.align({
 	containerFn: 'height' // The jQuery function to use to calculate height (height, innerHeight, outerHeight *False)
 });
 ```
+This is of course all of the options. However most of these options have a default value, allowing for a minimal setup such as:
+```
+buoy.align({
+	$el: $('.inner'),
+	$container: $('.container')
+});
+```
+
 If you are experiencing the issue whereby the parent element is pushed down due to the margin then see this issue: 
 http://stackoverflow.com/questions/2680478/margin-top-push-outer-div-down
 
