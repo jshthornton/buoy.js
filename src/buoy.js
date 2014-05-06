@@ -8,7 +8,7 @@
 		'transform': 'transform'
 	};
 
-	function _do($, _) {
+	function _do($) {
 		var $win = $(window),
 			buoy = {
 				align: function(opts) {
