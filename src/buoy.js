@@ -10,7 +10,34 @@
 
 	function _do($) {
 		var $win = $(window),
+			/*
+			A utility script which helps developers who need to vertically align elements with browsers that do not support the tranform trick.
+
+			@class buoy
+			@static
+			@requires jQuery
+			*/
 			buoy = {
+				/*
+				Aligns a set of elements to a set of corresponding containers.
+
+				@method align
+				@param {Object} opts Options to alter how the alignment operates.
+				@param {String} [opts.prop = 'margin'] Which property to alter:
+				- margin => margin-top
+				- top
+				- padding => padding-top
+				- transform
+				@param {Number} [opts.position = 50] What percentage to position the elements at.
+				@param {String} [opts.elFn = 'height'] What jQuery function to use to determine the element's height
+				- height
+				- innerHeight
+				- outerHeight (No parameter support)
+				@param {String} [opts.containerFn = 'height'] See `opts.elFn`.
+				@param {jQuery} opts.$el A collection of elements to align to their correspoding containers.
+				@param {jQuery} opts.$container A collection of elements to align to.
+				When aligning the loop is synchronised so that `opts.$el[n]` aligns to `opts.$container[n]`. Any excess elements are ignored.
+				*/
 				align: function(opts) {
 					opts = $.extend(true, {
 						prop: 'margin',
