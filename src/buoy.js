@@ -49,12 +49,16 @@
 					var $el,
 						percentage = opts.position / 100;
 
+					//Loops until either i hits the length of $el or $container
 					for(var i = 0;; i++) {
 						if(i === opts.$el.length || i === opts.$container.length) break;
 
 						$el = opts.$el.eq(i);
 
+						//If the element is an image then it needs to calculate its dimensions after loading.
+						//However we should check if it is already loaded, because if it is we can grab its dimension straight away.
 						if($el[0].nodeName === 'IMG' && $el[0].complete === false) {
+							//This operation has to take place in a separation function to preserve `i` as `load` is asynchronous.
 							this._imgBinder($el, opts.$container.eq(i), percentage, opts);
 						} else {
 							this._calculate($el, opts.$container.eq(i), percentage, opts);
@@ -62,23 +66,44 @@
 					}
 				},
 
+				/*
+				Calls `this._calculate` once the image has loaded.
+
+				@method _imgBinder
+				@protected
+				@param {jQuery} $el The element (which is an image) to bind load.
+				@param {jQuery} $container The element to align to.
+				@param {Number} percentage The percentage to align to. Passed to reduce calculation cycles to recalculate.
+				@param {Object} opts The original options sent to `this.align`.
+				*/
 				_imgBinder: function($el, $container, percentage, opts) {
 					$el.one('load', $.proxy(function() {
 						this._calculate($el, $container, percentage, opts);
 					}, this));
 				},
 
+				/*
+				Vertically aligns `$el` to `$container` based on the percentage.
+
+				@method _calculate
+				@protected
+				@param {jQuery} $el The element to align.
+				@param {jQuery} $container The element to align to.
+				@param {Number} percentage The percentage to align to. Passed to reduce calculation cycles to recalculate.
+				@param {Object} opts The original options sent to `this.align`.
+				*/
 				_calculate: function($el, $container, percentage, opts) {
 					var elHeight,
 						containerHeight,
 						offset,
 						value;
 
-					elHeight = $el[opts.elFn]();
-					containerHeight = $container[opts.containerFn]();
+					elHeight = $el[opts.elFn](); //Get $el height
+					containerHeight = $container[opts.containerFn](); //Get $container height
 
-					offset = (containerHeight * percentage) - (elHeight / 2);
+					offset = (containerHeight * percentage) - (elHeight / 2); //Get Y coordinate
 
+					//Stops $el from being pushed too far up if the $container is too short.
 					if(offset < 0) {
 						offset = 0;
 					}
